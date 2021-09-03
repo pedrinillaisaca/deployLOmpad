@@ -1,0 +1,40 @@
+version: "3.7"
+services:
+    api:
+        image:  fastapi-image
+        container_name: fast-cont
+        build: fastApi
+        environment:
+          - PORT=8080
+        ports:
+          - 8080:8080
+        networks:
+          - pro-net
+    web:
+        image: nginx-image
+        container_name: ngix-cont
+        build: nginx
+        ports:
+          - 8000:8000
+        depends_on:
+          - api
+        networks:
+          - pro-net
+    frontlom:
+        image: nginx-front-image
+        container_name: ngix-front-cont
+        build: front
+        ports:
+          - 80:80
+        depends_on:
+          - api
+        volumes:
+          - volumenfront:/usr/share/nginx/html
+        networks:
+          - pro-net
+volumes:
+    volumenfront:
+networks:
+    pro-net:
+
+
